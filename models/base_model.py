@@ -6,10 +6,21 @@ from datetime import datetime
 
 class BaseModel:
     """defining BaseModel for the AirBnB_clone project"""
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        Args:
+            *args (any): Unused.
+            **kwargs (dict): Key pair of attributes.
         self.id = str(uuid4())
         self.created_at = datetime.now()
         self.updated_at = self.created_at
+        if len(kwargs) != 0:
+            for k, v in kwargs.items():
+                if k == "created_at" or k == "updated_at":
+                    self.__dict__[k] = datetime.strptime(v, tform)
+                else:
+                    self.__dict__[k] = v
+        else:
+            models.storage.new(self)
 
     def __str__(self):
         name_of_class = self.__class__.__name__
@@ -17,6 +28,7 @@ class BaseModel:
 
     def save(self):
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         _dict = self.__dict__.copy()
