@@ -14,6 +14,7 @@ class BaseModel:
             *args (any): Unused.
             **kwargs (dict): Key/value pair of attributes.
         """
+        tform = "%Y-%m-%dT%H:%M:%S.%f"
         self.id = str(uuid4())
         self.created_at = datetime.now()
         self.updated_at = self.created_at
@@ -36,7 +37,7 @@ class BaseModel:
 
     def to_dict(self):
         _dict = self.__dict__.copy()
-        _dict['__class__'] = self.__class__.__name__
-        _dict['created_at'] = self.created_at.isoformat()
-        _dict['updated_at'] = self.updated_at.isoformat()
+        _dict["created_at"] = self.created_at.isoformat()
+        _dict["updated_at"] = self.updated_at.isoformat()
+        _dict["__class__"] = self.__class__.__name__
         return _dict
