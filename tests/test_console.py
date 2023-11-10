@@ -1,46 +1,78 @@
 #!/usr/bin/python3
 import unittest
-from models.engine.file_storage import FileStorage
-from models import storage
 from console import HBNBCommand
-import os
-import sys
+from models import storage
 from io import StringIO
+from models.engine.file_storage import FileStorage
+import os
 from unittest.mock import patch
 
 
-class prompt_test(unittest.TestCase):
-    def prompt_display(self):
+class TestHBNBCommand(unittest.TestCase):
+    """Unittests for console.py."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.file_path = "file.json"
+        cls.objects = FileStorage._FileStorage__objects
+
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            os.remove(cls.file_path)
+        except FileNotFoundError:
+            pass
+
+    def test_prompt_string(self):
         self.assertEqual("(hbnb) ", HBNBCommand.prompt)
 
-    def empty_line_display(self):
+    def test_empty_line(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(""))
             self.assertEqual("", output.getvalue().strip())
 
-class TestConsole(unittest.TestCase):
-    def setUp(self):
-        self.console = HBNBCommand()
-        self.held_output = StringIO()
+    def test_quit_and_EOF_exits(self):
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertTrue(HBNBCommand().onecmd("quit"))
+            self.assertTrue(HBNBCommand().onecmd("EOF"))
 
-    def capture_output(self):
-        self.held_output = StringIO()
-        self.held_output_context = patch("sys.stdout", self.held_output)
-        self.held_output_context.start()
+    def test_help(self):
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("help"))
+            self.assertIn(
+                    "Documented commands (type help <topic>):", output.getvalue
+                    ().strip())
 
-    def release_output(self):
-        self.held_output_context.stop()
-        output = self.held_output.getvalue().strip()
-        self.held_output.close()
-        return output
+    def test_create(self):
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
+            self.assertLess(0, len(output.getvalue().strip()))
+            test_key = f"BaseModel.{output.getvalue().strip()}"
+            self.assertIn(test_key, storage.all().keys())
 
-    def test_create_command(self):
-        with patch("sys.stdin", StringIO("create BaseModel\n")):
-            self.capture_output()
-            self.console.cmdloop()
-            output = self.release_output()
-        self.assertIn("BaseModel", output)
-        self.assertIn("13e854e3-9f1b-4c39-837e-3710086490ad", output)
+    def test_show(self):
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("show BaseModel 1"))
+            self.assertEqual(
+                    "** no instance found **", output.getvalue().strip())
+
+    def test_destroy(self):
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("destroy BaseModel 1"))
+            self.assertEqual(
+                    "** no instance found **", output.getvalue().strip())
+
+    def test_all(self):
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("all"))
+            self.assertEqual("[]", output.getvalue().strip())
+
+    def test_update(self):
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd(
+                "update BaseModel 1 name John"))
+            self.assertEqual(
+                    "** no instance found **", output.getvalue().strip())
 
 
 if __name__ == "__main__":
