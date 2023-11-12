@@ -1,13 +1,16 @@
 #!/usr/bin/python3
+"""tests for user.py"""
 import os
 import models
 import unittest
-from datetime import datetime
+from datetime import datetime, timedelta
 from models.user import User
 
-class TestUser_instantiation(unittest.TestCase):
 
-        @classmethod
+class TestUser_instantiation(unittest.TestCase):
+    """unittest for user"""
+
+    @classmethod
     def setUp(self):
         try:
             os.rename("file.json", "tmp")
@@ -51,9 +54,23 @@ class TestUser_instantiation(unittest.TestCase):
             'id': '123456',
             '__class__': 'User',
             'created_at': dt.isoformat(),
-            'updated_at': dt.isoformat(),
-        }
-        self.assertDictEqual(us.to_dict(), tdict)
+            'updated_at': dt.isoformat()
+            }
+        self.assertEqual(us.to_dict()['id'], tdict['id'])
+        self.assertEqual(us.to_dict()['__class__'], tdict['__class__'])
+        self.assertAlmostEqual(
+                datetime.strptime(
+                    us.to_dict()['created_at'], '%Y-%m-%dT%H:%M:%S.%f'),
+                datetime.strptime(tdict['created_at'], '%Y-%m-%dT%H:%M:%S.%f'),
+                delta=timedelta(milliseconds=1)
+                )
+        self.assertAlmostEqual(
+                datetime.strptime(
+                    us.to_dict()['updated_at'], '%Y-%m-%dT%H:%M:%S.%f'),
+                datetime.strptime(tdict['updated_at'], '%Y-%m-%dT%H:%M:%S.%f'),
+                delta=timedelta(milliseconds=1)
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

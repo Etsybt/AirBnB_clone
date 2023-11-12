@@ -1,27 +1,19 @@
 #!/usr/bin/python3
+"""tests for state.py"""
 import unittest
 import os
-import datetime
-from state import State
+from datetime import datetime
+from models.state import State
 
 
 class TestState(unittest.TestCase):
+    """unittest for state"""
 
     @classmethod
-    def setUp(self):
-        try:
-            os.rename("file.json")
-        except IOError:
-            pass
-
-    def tearDown(self):
+    def setUpClass(cls):
         try:
             os.remove("file.json")
-        except IOError:
-            pass
-        try:
-            os.rename("file.json")
-        except IOError:
+        except FileNotFoundError:
             pass
 
     def test_save_with_arg(self):
@@ -36,7 +28,9 @@ class TestState(unittest.TestCase):
         with open("file.json", "r") as f:
             self.assertIn(stid, f.read())
 
+
 class TestState_to_dict(unittest.TestCase):
+    """testing class"""
 
     def test_to_dict_type(self):
         self.assertTrue(dict, type(State().to_dict()))
@@ -55,9 +49,8 @@ class TestState_to_dict(unittest.TestCase):
         self.assertEqual(str, type(st_dict["created_at"]))
         self.assertEqual(str, type(st_dict["updated_at"]))
 
-
     def test_to_dict_output(self):
-        dt = datetime.today()
+        dt = datetime.now()
         st = State()
         st.id = "123456"
         st.created_at = st.updated_at = dt
@@ -65,9 +58,10 @@ class TestState_to_dict(unittest.TestCase):
             'id': '123456',
             '__class__': 'State',
             'created_at': dt.isoformat(),
-            'updated_at': dt.isoformat(),
-        }
+            'updated_at': dt.isoformat()
+            }
         self.assertDictEqual(st.to_dict(), tdict)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -57,5 +57,6 @@ class TestReview_instantiation(unittest.TestCase):
         }
         self.assertDictEqual(rv.to_dict(), tdict)
 
+
 if __name__ == "__main__":
     unittest.main()

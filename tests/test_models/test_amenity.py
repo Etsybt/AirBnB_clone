@@ -1,14 +1,16 @@
 #!/usr/bin/python3
+""" test for amenity.py """
 import os
 import models
 import unittest
 from datetime import datetime
 from models.amenity import Amenity
 
+
 class TestAmenity_instantiation(unittest.TestCase):
+    """unittest for amenity"""
 
-
-        @classmethod
+    @classmethod
     def setUp(self):
         try:
             os.rename("file.json", "tmp")
@@ -25,7 +27,7 @@ class TestAmenity_instantiation(unittest.TestCase):
         except IOError:
             pass
 
-        def test_save_with_arg(self):
+    def test_save_with_arg(self):
         am = Amenity()
         with self.assertRaises(TypeError):
             am.save(None)
@@ -37,7 +39,7 @@ class TestAmenity_instantiation(unittest.TestCase):
         with open("file.json", "r") as f:
             self.assertIn(amid, f.read())
 
-        def test_to_dict_datetime_attributes_are_strs(self):
+    def test_to_dict_datetime_attributes_are_strs(self):
         am = Amenity()
         am_dict = am.to_dict()
         self.assertEqual(str, type(am_dict["id"]))
@@ -53,9 +55,10 @@ class TestAmenity_instantiation(unittest.TestCase):
             'id': '123456',
             '__class__': 'Amenity',
             'created_at': dt.isoformat(),
-            'updated_at': dt.isoformat(),
-        }
+            'updated_at': dt.isoformat()
+            }
         self.assertDictEqual(am.to_dict(), tdict)
+
 
 if __name__ == "__main__":
     unittest.main()

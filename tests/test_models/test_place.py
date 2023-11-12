@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""tests for place.py"""
 import os
 import models
 import unittest
@@ -7,6 +8,7 @@ from models.place import Place
 
 
 class TestPlace_instantiation(unittest.TestCase):
+    """unittest for place"""
 
     @classmethod
     def setUp(self):
@@ -36,7 +38,8 @@ class TestPlace_instantiation(unittest.TestCase):
         plid = "Place." + pl.id
         with open("file.json", "r") as f:
             self.assertIn(plid, f.read())
-        def test_to_dict_datetime_attributes_are_strs(self):
+
+    def test_to_dict_datetime_attributes_are_strs(self):
         pl = Place()
         pl_dict = pl.to_dict()
         self.assertEqual(str, type(pl_dict["id"]))
@@ -58,9 +61,10 @@ class TestPlace_instantiation(unittest.TestCase):
             'id': '123456',
             '__class__': 'Place',
             'created_at': dt.isoformat(),
-            'updated_at': dt.isoformat(),
-        }
+            'updated_at': dt.isoformat()
+            }
         self.assertNotEqual(pl.to_dict(), pl.__dict__)
+
 
 if __name__ == "__main__":
     unittest.main()

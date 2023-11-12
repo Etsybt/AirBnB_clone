@@ -1,14 +1,16 @@
 #!/usr/bin/python3
+""" tests for city.py """
 import os
 import models
 import unittest
 from datetime import datetime
 from models.city import City
 
+
 class TestCity_instantiation(unittest.TestCase):
+    """unittest for city"""
 
-
-        @classmethod
+    @classmethod
     def setUp(self):
         try:
             os.rename("file.json", "tmp")
@@ -53,9 +55,10 @@ class TestCity_instantiation(unittest.TestCase):
             'id': '123456',
             '__class__': 'City',
             'created_at': dt.isoformat(),
-            'updated_at': dt.isoformat(),
-        }
+            'updated_at': dt.isoformat()
+            }
         self.assertDictEqual(cy.to_dict(), tdict)
+
 
 if __name__ == "__main__":
     unittest.main()

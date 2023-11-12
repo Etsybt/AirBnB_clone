@@ -4,6 +4,7 @@ import models
 from uuid import uuid4
 from datetime import datetime
 
+
 class BaseModel:
     """defining BaseModel for the AirBnB_clone project"""
     def __init__(self, *args, **kwargs):

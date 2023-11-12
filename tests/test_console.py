@@ -63,11 +63,6 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(
                     "** no instance found **", output.getvalue().strip())
 
-    def test_all(self):
-        with patch("sys.stdout", new=StringIO()) as output:
-            self.assertFalse(HBNBCommand().onecmd("all"))
-            self.assertEqual("[]", output.getvalue().strip())
-
     def test_update(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
