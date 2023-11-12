@@ -1,4 +1,5 @@
-#!/usr/bin/python3
+#!/usr/bin/python
+""" tests the console commands for the BaseModel Class """
 import unittest
 import os
 from datetime import datetime
