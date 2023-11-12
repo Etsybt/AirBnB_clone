@@ -3,12 +3,12 @@ import os
 import models
 import unittest
 from datetime import datetime
-from models.review import Review
+from models.amenity import Amenity
+
+class TestAmenity_instantiation(unittest.TestCase):
 
 
-class TestReview_instantiation(unittest.TestCase):
-
-    @classmethod
+        @classmethod
     def setUp(self):
         try:
             os.rename("file.json", "tmp")
@@ -25,37 +25,37 @@ class TestReview_instantiation(unittest.TestCase):
         except IOError:
             pass
 
-    def test_save_with_arg(self):
-        rv = Review()
+        def test_save_with_arg(self):
+        am = Amenity()
         with self.assertRaises(TypeError):
-            rv.save(None)
+            am.save(None)
 
     def test_save_updates_file(self):
-        rv = Review()
-        rv.save()
-        rvid = "Review." + rv.id
+        am = Amenity()
+        am.save()
+        amid = "Amenity." + am.id
         with open("file.json", "r") as f:
-            self.assertIn(rvid, f.read())
+            self.assertIn(amid, f.read())
 
-    def test_to_dict_datetime_attributes_are_strs(self):
-        rv = Review()
-        rv_dict = rv.to_dict()
-        self.assertEqual(str, type(rv_dict["id"]))
-        self.assertEqual(str, type(rv_dict["created_at"]))
-        self.assertEqual(str, type(rv_dict["updated_at"]))
+        def test_to_dict_datetime_attributes_are_strs(self):
+        am = Amenity()
+        am_dict = am.to_dict()
+        self.assertEqual(str, type(am_dict["id"]))
+        self.assertEqual(str, type(am_dict["created_at"]))
+        self.assertEqual(str, type(am_dict["updated_at"]))
 
     def test_to_dict_output(self):
         dt = datetime.today()
-        rv = Review()
-        rv.id = "123456"
-        rv.created_at = rv.updated_at = dt
+        am = Amenity()
+        am.id = "123456"
+        am.created_at = am.updated_at = dt
         tdict = {
             'id': '123456',
-            '__class__': 'Review',
+            '__class__': 'Amenity',
             'created_at': dt.isoformat(),
             'updated_at': dt.isoformat(),
         }
-        self.assertDictEqual(rv.to_dict(), tdict)
+        self.assertDictEqual(am.to_dict(), tdict)
 
 if __name__ == "__main__":
     unittest.main()

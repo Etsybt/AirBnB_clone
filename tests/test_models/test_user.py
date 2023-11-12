@@ -3,12 +3,11 @@ import os
 import models
 import unittest
 from datetime import datetime
-from models.review import Review
+from models.user import User
 
+class TestUser_instantiation(unittest.TestCase):
 
-class TestReview_instantiation(unittest.TestCase):
-
-    @classmethod
+        @classmethod
     def setUp(self):
         try:
             os.rename("file.json", "tmp")
@@ -26,36 +25,35 @@ class TestReview_instantiation(unittest.TestCase):
             pass
 
     def test_save_with_arg(self):
-        rv = Review()
+        us = User()
         with self.assertRaises(TypeError):
-            rv.save(None)
+            us.save(None)
 
     def test_save_updates_file(self):
-        rv = Review()
-        rv.save()
-        rvid = "Review." + rv.id
+        us = User()
+        us.save()
+        usid = "User." + us.id
         with open("file.json", "r") as f:
-            self.assertIn(rvid, f.read())
+            self.assertIn(usid, f.read())
 
     def test_to_dict_datetime_attributes_are_strs(self):
-        rv = Review()
-        rv_dict = rv.to_dict()
-        self.assertEqual(str, type(rv_dict["id"]))
-        self.assertEqual(str, type(rv_dict["created_at"]))
-        self.assertEqual(str, type(rv_dict["updated_at"]))
+        us = User()
+        us_dict = us.to_dict()
+        self.assertEqual(str, type(us_dict["id"]))
+        self.assertEqual(str, type(us_dict["created_at"]))
+        self.assertEqual(str, type(us_dict["updated_at"]))
 
     def test_to_dict_output(self):
         dt = datetime.today()
-        rv = Review()
-        rv.id = "123456"
-        rv.created_at = rv.updated_at = dt
+        us = User()
+        us.id = "123456"
         tdict = {
             'id': '123456',
-            '__class__': 'Review',
+            '__class__': 'User',
             'created_at': dt.isoformat(),
             'updated_at': dt.isoformat(),
         }
-        self.assertDictEqual(rv.to_dict(), tdict)
+        self.assertDictEqual(us.to_dict(), tdict)
 
 if __name__ == "__main__":
     unittest.main()
