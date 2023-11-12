@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" defining file storage """
 from models.base_model import BaseModel
 import json
 from models.city import City
