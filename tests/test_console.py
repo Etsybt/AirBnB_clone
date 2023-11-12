@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" Tests the console commands """
 import unittest
 from console import HBNBCommand
 from models import storage
@@ -9,7 +10,7 @@ from unittest.mock import patch
 
 
 class TestHBNBCommand(unittest.TestCase):
-    """Unittests for console.py."""
+    """Unittests for console.py"""
 
     @classmethod
     def setUpClass(cls):

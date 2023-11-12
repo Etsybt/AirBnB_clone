@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" Defining the console """
 import cmd
 import shlex
 import re
@@ -13,6 +14,7 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
+    """ defining the console commands """
     prompt = "(hbnb) "
     Class = {
         "BaseModel",
@@ -29,7 +31,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_EOF(self, arg):
-        """Exits the program"""
+        """press CTRL+D to exit the program"""
         print("")
         return True
 
@@ -100,8 +102,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             result = []
             for key, value in obj_dict.items():
-                if len(_input) == 0 or value.__class__.__name__ == _input[0]:
-                    result.append(str(value))
+                 if len(_input) == 0 or value.__class__.__name__ == _input[0]:
+                      result.append(str(value))
             print(result)
 
     def do_update(self, arg):
