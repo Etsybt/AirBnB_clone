@@ -102,8 +102,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             result = []
             for key, value in obj_dict.items():
-                if len(_input) == 0 or value.__class__.__name__ == _input[0]:
-                    result.append(str(value))
+                 if len(_input) == 0 or value.__class__.__name__ == _input[0]:
+                      result.append(str(value))
             print(result)
 
     def do_update(self, arg):
